@@ -9,8 +9,8 @@ export const ConnectionState = {
   DISCONNECTED: 'DISCONNECTED'
 }
 
-async function initialize(host, authPath, messageSubPath, appKey, cluster, authToken) {
-  return await NativeModules.Pusher.initialize(host, authPath, messageSubPath, appKey, cluster, authToken)
+async function initialize(host, authPath, messageSubPath, appKey, cluster, authToken, clientKey) {
+  return await NativeModules.Pusher.initialize(host, authPath, messageSubPath, appKey, cluster, authToken, clientKey)
 }
 
 async function getConnectionState() {
