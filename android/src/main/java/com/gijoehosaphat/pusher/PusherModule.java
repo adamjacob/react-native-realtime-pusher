@@ -79,12 +79,13 @@ public class PusherModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void initialize(String host, String authPath, String messageSubPath, String appKey, String cluster, String authToken, Promise promise) {
+    public void initialize(String host, String authPath, String messageSubPath, String appKey, String cluster, String authToken, String clientKey, Promise promise) {
         this.authEndPoint = host + authPath;
         this.authToken = authToken;
         this.messageEndPoint = host + messageSubPath;
         this.appKey = appKey;
         this.cluster = cluster;
+        this.clientKey = clientKey;
 
         WritableMap map = Arguments.createMap();
         map.putString("host", host);
@@ -92,6 +93,7 @@ public class PusherModule extends ReactContextBaseJavaModule {
         map.putString("messageSubPath", messageSubPath);
         map.putString("appKey", appKey);
         map.putString("authToken", authToken);
+        map.putString("clientKey", clientKey);
         promise.resolve(map);
     }
 
@@ -100,8 +102,9 @@ public class PusherModule extends ReactContextBaseJavaModule {
         try {
           //Define our authorization headers...
           HashMap<String, String> authHeaders = new HashMap<>();
-          authHeaders.put("Content-Type", "application/x-www-form-urlencoded");
+          authHeaders.put("Content-Type", "application/json");
           authHeaders.put("Authorization", this.authToken);
+          authHeaders.put("X-Client-Key", this.clientKey);
 
           //Set up our HttpAuthorizer
           HttpAuthorizer authorizer = new HttpAuthorizer(this.authEndPoint);
@@ -134,7 +137,7 @@ public class PusherModule extends ReactContextBaseJavaModule {
               }
           }, ConnectionState.ALL);
 
-          promise.resolve(true);
+          promise.resolve(pusher.getConnection().getSocketId());
         } catch(Exception ex) {
           promise.reject(ex);
         }
