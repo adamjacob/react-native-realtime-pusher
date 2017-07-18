@@ -63,6 +63,7 @@ public class PusherModule extends ReactContextBaseJavaModule {
     private String authToken = null;
     private String messageEndPoint = null;
     private String appKey = null;
+    private String clientKey = null;
     private String cluster = null;
     private Pusher pusher = null;
     private List<String> channels = new ArrayList<String>();
