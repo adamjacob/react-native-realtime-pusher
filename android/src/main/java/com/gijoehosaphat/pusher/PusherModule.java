@@ -226,7 +226,7 @@ public class PusherModule extends ReactContextBaseJavaModule {
                 public void onEvent(String channelName, String eventName, final String data) {
                     onChannelEvent(channelName, eventName, data);
                 }
-            }, channelEventName);
+            });
             channels.add(channelName);
         }
     }
