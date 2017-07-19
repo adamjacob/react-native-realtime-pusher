@@ -328,6 +328,10 @@ public class PusherModule extends ReactContextBaseJavaModule {
                   onChannelEvent(channelName, eventName, data);
               }
           });
+        }else{
+          WritableMap params = Arguments.createMap();
+          params.putString("message", "Pusher Instance Null or Channel not subscribed");
+          sendEvent(params);
         }
     }
 
