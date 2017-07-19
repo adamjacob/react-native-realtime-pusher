@@ -307,6 +307,30 @@ public class PusherModule extends ReactContextBaseJavaModule {
         }
     }
 
+    @ReactMethod
+    public void channelEventBind(final String channelName, final String channelEventName) {
+        PrivateChannel channel = null;
+        if (channelPrivateIsSubscribed(channelName) && this.pusher != null) {
+          channel = this.pusher.getPrivateChannel(channelName);
+          channel.bind(channelEventName, new PrivateChannelEventListener() {
+              @Override
+              public void onSubscriptionSucceeded(String channelName) {
+                  onChannelSubscriptionSucceeded(channelName);
+              }
+
+              @Override
+              public void onAuthenticationFailure(String message, Exception e) {
+                  onChannelAuthenticationFailure(message, channelName, e);
+              }
+
+              @Override
+              public void onEvent(String channelName, String eventName, final String data) {
+                  onChannelEvent(channelName, eventName, data);
+              }
+          });
+        }
+    }
+
     private Boolean channelIsSubscribed(String channelName) {
         Channel channel = null;
         if (this.pusher != null) {
@@ -329,30 +353,6 @@ public class PusherModule extends ReactContextBaseJavaModule {
             channel = this.pusher.getPresenceChannel(channelName);
         }
         return channel == null ? false : channel.isSubscribed();
-    }
-
-    @ReactMethod
-    public void channelEventBind(final String channelName, final String channelEventName) {
-        PrivateChannel channel = null;
-        if (!channelPrivateIsSubscribed(channelName) && this.pusher != null) {
-          channel = this.pusher.getPrivateChannel(channelName);
-          channel.bind(channelEventName, new PrivateChannelEventListener() {
-              @Override
-              public void onSubscriptionSucceeded(String channelName) {
-                  onChannelSubscriptionSucceeded(channelName);
-              }
-
-              @Override
-              public void onAuthenticationFailure(String message, Exception e) {
-                  onChannelAuthenticationFailure(message, channelName, e);
-              }
-
-              @Override
-              public void onEvent(String channelName, String eventName, final String data) {
-                  onChannelEvent(channelName, eventName, data);
-              }
-          });
-        }
     }
 
     @ReactMethod
