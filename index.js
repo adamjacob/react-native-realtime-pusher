@@ -33,6 +33,10 @@ async function channelUnsubscribe(channel) {
   return await NativeModules.Pusher.channelUnsubscribe(channel)
 }
 
+async function channelEventBind(channel, channelEvent) {
+  return await NativeModules.Pusher.channelEventBind(channel, channelEvent)
+}
+
 async function messagePost(messageObject, channelName, channelEvent) {
   return await NativeModules.Pusher.messagePost(messageObject, channelName, channelEvent)
 }
@@ -44,6 +48,7 @@ const Pusher = {
   disconnect,
   channelSubscribe,
   channelUnsubscribe,
+  channelEventBind,
   messagePost
 }
 
