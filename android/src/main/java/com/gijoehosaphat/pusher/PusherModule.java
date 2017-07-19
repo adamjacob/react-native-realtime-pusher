@@ -310,7 +310,7 @@ public class PusherModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void channelEventBind(final String channelName, final String channelEventName) {
         PrivateChannel channel = null;
-        if (channelPrivateIsSubscribed(channelName) && this.pusher != null) {
+        if (this.pusher != null && channelPrivateIsSubscribed(channelName)) {
           channel = this.pusher.getPrivateChannel(channelName);
           channel.bind(channelEventName, new PrivateChannelEventListener() {
               @Override
