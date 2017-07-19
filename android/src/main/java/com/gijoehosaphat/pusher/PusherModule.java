@@ -103,7 +103,7 @@ public class PusherModule extends ReactContextBaseJavaModule {
         try {
           //Define our authorization headers...
           HashMap<String, String> authHeaders = new HashMap<>();
-          authHeaders.put("Content-Type", "application/json");
+          authHeaders.put("Content-Type", "application/x-www-form-urlencoded");
           authHeaders.put("Authorization", this.authToken);
           authHeaders.put("X-Client-Key", this.clientKey);
 
