@@ -336,12 +336,12 @@ public class PusherModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void subscribeAndBind(final String channelName, final ArrayList channelEventNames) {
+    public void subscribeAndBind(final String channelName, final ArrayList<String> channelEventNames) {
         PrivateChannel channel = null;
         if (this.pusher != null && !channelPrivateIsSubscribed(channelName)) {
           channel = this.pusher.subscribePrivate(channelName);
-          for(int i = 0; i < channelEventNames.length; i++) {
-            channel.bind(channelEventNames[i], new PrivateChannelEventListener() {
+          for (String channelEvent : channelEventNames) {
+            channel.bind(channelEvent, new PrivateChannelEventListener() {
                 @Override
                 public void onSubscriptionSucceeded(String channelName) {
                     onChannelSubscriptionSucceeded(channelName);
