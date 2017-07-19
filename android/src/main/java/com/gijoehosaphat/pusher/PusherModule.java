@@ -112,7 +112,7 @@ public class PusherModule extends ReactContextBaseJavaModule {
           authorizer.setHeaders(authHeaders);
 
           //Apply to pusher options and create our Pusher object.
-          PusherOptions options = new PusherOptions().setEncrypted(true).setAuthorizer(authorizer);
+          PusherOptions options = new PusherOptions().setEncrypted(true).setWssPort(443).setAuthorizer(authorizer);
           options.setCluster(this.cluster);
           this.pusher = new Pusher(appKey, options);
 
