@@ -177,7 +177,7 @@ public class PusherModule extends ReactContextBaseJavaModule {
     public void channelSubscribe(String channelName, String channelEventName, Promise promise) {
         try {
             if (channelName.startsWith("private-")) {
-              this.pusher.subscribePrivate(channelName)
+              this.pusher.subscribePrivate(channelName);
                 // channelPrivateSubscribe(channelName, channelEventName);
             } else if (channelName.startsWith("presence-")) {
                 channelPresenceSubscribe(channelName, channelEventName);
