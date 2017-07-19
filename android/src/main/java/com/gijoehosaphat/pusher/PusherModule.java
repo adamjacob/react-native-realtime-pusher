@@ -177,8 +177,7 @@ public class PusherModule extends ReactContextBaseJavaModule {
     public void channelSubscribe(String channelName, String channelEventName, Promise promise) {
         try {
             if (channelName.startsWith("private-")) {
-              this.pusher.subscribePrivate(channelName);
-                // channelPrivateSubscribe(channelName, channelEventName);
+                channelPrivateSubscribe(channelName, channelEventName);
             } else if (channelName.startsWith("presence-")) {
                 channelPresenceSubscribe(channelName, channelEventName);
             } else {
@@ -330,9 +329,23 @@ public class PusherModule extends ReactContextBaseJavaModule {
               }
           });
         }else{
-          WritableMap params = Arguments.createMap();
-          params.putString("message", "Pusher Instance Null or Channel not subscribed");
-          sendEvent(params);
+          channel = this.pusher.subscribePrivate(channelName);
+          channel.bind(channelEventName, new PrivateChannelEventListener() {
+              @Override
+              public void onSubscriptionSucceeded(String channelName) {
+                  onChannelSubscriptionSucceeded(channelName);
+              }
+
+              @Override
+              public void onAuthenticationFailure(String message, Exception e) {
+                  onChannelAuthenticationFailure(message, channelName, e);
+              }
+
+              @Override
+              public void onEvent(String channelName, String eventName, final String data) {
+                  onChannelEvent(channelName, eventName, data);
+              }
+          });
         }
     }
 
