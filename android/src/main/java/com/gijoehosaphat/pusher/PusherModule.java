@@ -339,24 +339,40 @@ public class PusherModule extends ReactContextBaseJavaModule {
     public void subscribeAndBind(final String channelName, final ArrayList<String> channelEventNames) {
         if (this.pusher != null && !channelPrivateIsSubscribed(channelName)) {
           PrivateChannel channel = this.pusher.subscribePrivate(channelName);
-          for (int i = 0; i < channelEventNames.size(); i++) {
-            channel.bind(channelEventNames.get(i), new PrivateChannelEventListener() {
-                @Override
-                public void onSubscriptionSucceeded(String channelName) {
-                    onChannelSubscriptionSucceeded(channelName);
-                }
+          channel.bind(channelEventNames.get(0), new PrivateChannelEventListener() {
+              @Override
+              public void onSubscriptionSucceeded(String channelName) {
+                  onChannelSubscriptionSucceeded(channelName);
+              }
 
-                @Override
-                public void onAuthenticationFailure(String message, Exception e) {
-                    onChannelAuthenticationFailure(message, channelName, e);
-                }
+              @Override
+              public void onAuthenticationFailure(String message, Exception e) {
+                  onChannelAuthenticationFailure(message, channelName, e);
+              }
 
-                @Override
-                public void onEvent(String channelName, String eventName, final String data) {
-                    onChannelEvent(channelName, eventName, data);
-                }
-            });
-          }
+              @Override
+              public void onEvent(String channelName, String eventName, final String data) {
+                  onChannelEvent(channelName, eventName, data);
+              }
+          });
+          // for (int i = 0; i < channelEventNames.size(); i++) {
+          //   channel.bind(channelEventNames.get(i), new PrivateChannelEventListener() {
+          //       @Override
+          //       public void onSubscriptionSucceeded(String channelName) {
+          //           onChannelSubscriptionSucceeded(channelName);
+          //       }
+          //
+          //       @Override
+          //       public void onAuthenticationFailure(String message, Exception e) {
+          //           onChannelAuthenticationFailure(message, channelName, e);
+          //       }
+          //
+          //       @Override
+          //       public void onEvent(String channelName, String eventName, final String data) {
+          //           onChannelEvent(channelName, eventName, data);
+          //       }
+          //   });
+          // }
         }else{
           WritableMap params = Arguments.createMap();
           params.putString("message", "Pusher Instance Null or Channel not subscribed");
